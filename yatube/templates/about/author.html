@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+<h1>Hello, It's me</h1>
+{% load static %}
+      
+      <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+        crossorigin="anonymous"
+      />
+<p>
+  Заполню информацию по завершению проекта ... 
+  <p>
+    <img src="{% static 'img/about_author.jpg' %}" width="250" height="250" class="d-inline-block align-top" alt="">
+  </p>
+  </p>
+{% endblock %}

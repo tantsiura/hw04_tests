@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Последние обновления на сайте{% endblock %}
+<main>
+    {% block content %}
+    <div class="container py-5">
+      {% for post in page_obj%}
+        {% include 'includes/content.html' %}
+        {% if not forloop.last %}<hr>{% endif %}
+      {% endfor %}
+      {%include 'posts/includes/paginator.html'%}
+    </div>
+    {% endblock %}
+<main>
+

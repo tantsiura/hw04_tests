@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}
+Форма добавления нового поста
+{% endblock %}
+{% block content %}
+  <div class="container py-">
+    <div class="row justify-content-center">
+      <div class="col-md-8 p-5">
+        <div class="card">
+          <div class="card-header">
+            {% if is_edit %}
+              Редактирование поста
+            {% else %}
+              Форма добавления нового поста
+            {% endif %}
+          </div>
+          <div class="card-body">
+            {% load user_filters %} 
+            {% if form.errors %}
+              {% for field in form %} 
+                {% for error in field.errors %}            
+                  <div class="alert alert-danger">
+                    {{ error|escape }}
+                  </div>
+                {% endfor %}
+              {% endfor %}
+              {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                {{ error|escape }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          <form method="post" action="{% url 'posts:post_create' %}">
+          {% csrf_token %}
+          {% include 'includes/create_post_form.html' %}
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-primary">
+            {% if is_edit %}
+              Сохранить
+            {% else %}
+              Добавить пост
+            {% endif %}
+            </button>
+          </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
