@@ -1,8 +1,4 @@
-from http import HTTPStatus
-
-from django import forms
 from django.contrib.auth import get_user_model
-from django.core.paginator import Page
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -14,7 +10,7 @@ class AboutViewsTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username='NoName1')
-        
+
     def setUp(self):
         # Создаем неавторизованный клиент
         self.guest_client = Client()
@@ -40,6 +36,3 @@ class AboutViewsTests(TestCase):
             with self.subTest(reverse_name=reverse_name):
                 response = self.authorized_client.get(reverse_name)
                 self.assertTemplateUsed(response, template)
-    
-
-

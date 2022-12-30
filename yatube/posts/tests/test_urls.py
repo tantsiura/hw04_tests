@@ -9,11 +9,12 @@ from ..models import Group, Post
 
 User = get_user_model()
 
+
 class PostsURLTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        
+
         cls.user = User.objects.create_user(username='auth')
         cls.group = Group.objects.create(
             title='Тестовая группа',
@@ -35,14 +36,12 @@ class PostsURLTests(TestCase):
         # Создаем клиент-автор
         self.author_client = Client()
         self.author_client.force_login(PostsURLTests.user)
-        
         self.public_link_list = [
             '/',
             f'/group/{PostsURLTests.group.slug}/',
             '/profile/auth/',
             f'/posts/{PostsURLTests.post.pk}/',
         ]
-    
 
     def test_unauthorized_accesible(self):
         """Проверка доступа к общедоступным страницам
@@ -52,7 +51,7 @@ class PostsURLTests(TestCase):
             with self.subTest(address=address):
                 response = self.guest_client.get(address)
                 self.assertEqual(response.status_code, HTTPStatus.OK)
-                
+
     def test_authorized_accesible(self):
         """
         Проверка доступа к страницам авторизованным пользователем.
@@ -63,10 +62,9 @@ class PostsURLTests(TestCase):
             with self.subTest(address=address):
                 response = self.authorized_client.get(address)
                 self.assertEqual(response.status_code, HTTPStatus.OK)
-        
-        
+
     def test_author_accesible(self):
-        """Проверка доступа к страницам 
+        """Проверка доступа к страницам
         авторизованным пользователем.
         """
         link_list = self.public_link_list
@@ -76,8 +74,7 @@ class PostsURLTests(TestCase):
             with self.subTest(address=address):
                 response = self.author_client.get(address)
                 self.assertEqual(response.status_code, HTTPStatus.OK)
-        
-        
+
     def test_redirect_anonymous_to_login_on_create(self):
         """Страница по адресу /create/ перенаправит анонимного
         пользователя на страницу логина.
@@ -88,7 +85,6 @@ class PostsURLTests(TestCase):
             reverse('users:login') + '?next=' + reverse('posts:post_create'),
         )
 
-
     def test_guest_redirect_on_edit(self):
         """Страница по адресу /posts/{post_id}/edit/ перенаправит гостя
         на страницу поста.
@@ -97,13 +93,11 @@ class PostsURLTests(TestCase):
             f'/posts/{PostsURLTests.post.pk}/edit/', follow=True
         )
         self.assertRedirects(
-            response, reverse('users:login') + '?next=' + 
-            reverse(
+            response, reverse('users:login') + '?next=' + reverse(
                 'posts:post_detail',
                 kwargs={'post_id': PostsURLTests.post.pk}
             ) + 'edit/'
         )
-
 
     def test_authorized_redirect_on_edit(self):
         """Страница по адресу /posts/{post_id}/edit/ перенаправит не автора
@@ -119,7 +113,6 @@ class PostsURLTests(TestCase):
                 kwargs={'post_id': PostsURLTests.post.pk}
             ),
         )
-
 
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""

@@ -24,4 +24,3 @@ class AboutURLTests(TestCase):
         self.assertTemplateUsed(response_author, 'about/author.html')
         response_tech = self.guest_client.get('/about/tech/')
         self.assertTemplateUsed(response_tech, 'about/tech.html')
-

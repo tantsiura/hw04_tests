@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -18,10 +17,10 @@ class UsersViewTest(TestCase):
         user_counts_before_test = User.objects.count()
         self.guest_client.post(
             reverse('users:signup'),
-            data = {
-                'username' : 'tester_test',
+            data={
+                'username': 'tester_test',
                 'password1': 'Test_Moscow2022',
-                'password2' : 'Test_Moscow2022'
+                'password2': 'Test_Moscow2022'
             }
         )
         self.assertGreater(User.objects.count(), user_counts_before_test)

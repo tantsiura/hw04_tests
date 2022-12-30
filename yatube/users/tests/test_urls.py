@@ -1,13 +1,14 @@
-from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+
 User = get_user_model()
-from http import HTTPStatus
+
 
 class UsersURLTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        
+
         cls.user = User.objects.create_user(username='auth')
 
     def setUp(self):
@@ -37,4 +38,3 @@ class UsersURLTests(TestCase):
         self.assertTemplateUsed(response_tech, 'users/login.html')
         response_tech = self.authorized_client.get('/auth/logout/')
         self.assertTemplateUsed(response_tech, 'users/logged_out.html')
-

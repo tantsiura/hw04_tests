@@ -1,59 +1,80 @@
-from django.contrib.auth import get_user_model
-from ..models import Group, Post
-from posts.forms import PostForm
-from posts.models import Post
+from http import HTTPStatus
+
 from django.test import Client, TestCase
 from django.urls import reverse
 
-User = get_user_model()
+from ..models import Group, Post, User
 
 
 class PostFormTests(TestCase):
     @classmethod
-    def setUp(self):
-        self.user = User.objects.create_user(username='NoName')
-        # Создаем запись в базе данных для проверки сушествующего slug
-        self.group = Group.objects.create(
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user = User.objects.create(username='auth')
+        cls.group = Group.objects.create(
             title='Тестовая группа',
-            slug='test_slug'
+            slug='test-slug',
+            description='Тестовое описание',
         )
+        cls.post = Post.objects.create(
+            author=cls.user,
+            text='Тестовый текст',
+            group=cls.group,
+        )
+
+    def setUp(self):
         self.guest_client = Client()
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
 
-        self.post_for_test = Post.objects.create(
-            author = self.user,
-            text = 'Тестовый пост'
-        )        
-
     def test_create_post(self):
-        """Валидная форма создает пост."""
-        # Подсчитаем количество записей в Posts
-        posts_count_before_test = Post.objects.count()  
-        form_data = {
-            'text': 'Тестовый пост',
-            'group': self.group
-        }
-        # Отправляем POST-запрос
+        """Валидная форма создает запись в Post."""
+        posts_count = Post.objects.count()
+        form_data = {'text': 'Тестовый текст'}
         response = self.authorized_client.post(
             reverse('posts:post_create'),
             data=form_data,
             follow=True
         )
-        # Проверяем, сработал ли редирект
-        self.assertRedirects(
-            response,
+        self.assertRedirects(response, reverse('posts:profile', kwargs={
+            'username': f'{PostFormTests.user.username}'}))
+        self.assertEqual(Post.objects.count(), posts_count + 1)
+        self.assertTrue(Post.objects.filter(text='Тестовый текст').exists())
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertEqual(Post.objects.last().id, self.post.id)
+
+    def test_post_edit(self):
+        """Валидная форма изменяет запись в Post."""
+        posts_count = Post.objects.count()
+        form_data = {'text': 'Изменяем текст', 'group': self.group.id}
+        response = self.authorized_client.post(
             reverse(
-                'posts:profile',
-                kwargs={
-                    'username': f'{PostFormTests.user.username}'
-                    }))
-        # Проверяем, увеличилось ли число постов
-        self.assertEqual(Post.objects.count(), posts_count_before_test+1)
-        # Проверяем, что создалась запись с заданным слагом
-        self.assertTrue(
-            Post.objects.filter(
-                slug='testovyij-zagolovok',
-                text='Тестовый текст'
-            ).exists()
+                'posts:post_edit',
+                kwargs={'post_id': PostFormTests.post.id}),
+            data=form_data,
+            follow=True,
         )
+        self.assertRedirects(response, reverse(
+            'posts:post_detail',
+            kwargs={'post_id': PostFormTests.post.id}))
+        self.assertEqual(Post.objects.count(), posts_count)
+        self.assertTrue(Post.objects.filter(text='Изменяем текст').exists())
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_post_edit_not_create_guest_client(self):
+        """Валидная форма не изменит запись в Post если неавторизован."""
+        posts_count = Post.objects.count()
+        form_data = {'text': 'Изменяем текст', 'group': self.group.id}
+        response = self.guest_client.post(
+            reverse(
+                'posts:post_edit',
+                kwargs={'post_id': PostFormTests.post.id}),
+            data=form_data,
+            follow=True,
+        )
+        self.assertRedirects(
+            response, f'/auth/login/?next=/posts/{self.post.id}/edit/'
+        )
+        self.assertEqual(Post.objects.count(), posts_count)
+        self.assertFalse(Post.objects.filter(text='Изменяем текст').exists())
+        self.assertEqual(response.status_code, HTTPStatus.OK)

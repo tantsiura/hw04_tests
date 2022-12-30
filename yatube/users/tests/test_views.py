@@ -1,11 +1,6 @@
-from http import HTTPStatus
-
-from django import forms
 from django.contrib.auth import get_user_model
-from django.core.paginator import Page
 from django.test import Client, TestCase
 from django.urls import reverse
-
 
 User = get_user_model()
 
@@ -27,12 +22,12 @@ class PostsViewsTests(TestCase):
         """URL-адрес использует соответствующий шаблон."""
         # Собираем в словарь пары "имя_html_шаблона: reverse(name)"
         templates_pages_names_for_guest = {
-            'users/login.html' : reverse('users:login'),
-            'users/signup.html' : reverse('users:signup'),
+            'users/login.html': reverse('users:login'),
+            'users/signup.html': reverse('users:signup'),
 
         }
-        templates_pages_names_for_authorized_client = {
-            'users/logged_out.html' : reverse('users:logout')
+        templ_pages_for_authorized_clnt = {
+            'users/logged_out.html': reverse('users:logout')
         }
         # Проверяем, что при обращении к name
         # вызывается соответствующий HTML-шаблон
@@ -40,11 +35,8 @@ class PostsViewsTests(TestCase):
             with self.subTest(reverse_name=reverse_name):
                 response = self.guest_client.get(reverse_name)
                 self.assertTemplateUsed(response, template)
-        
-        for template, reverse_name in templates_pages_names_for_authorized_client.items():
+
+        for template, reverse_name in templ_pages_for_authorized_clnt.items():
             with self.subTest(reverse_name=reverse_name):
                 response = self.authorized_client.get(reverse_name)
                 self.assertTemplateUsed(response, template)
-    
-    
- 
