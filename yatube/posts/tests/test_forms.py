@@ -41,16 +41,16 @@ class PostFormTests(TestCase):
 
     def test_post_edit(self):
         """Валидная форма изменяет запись в Post."""
-        self.group = Group.objects.create( 
-            title='Тестовая группа', 
-            slug='test-slug', 
-            description='Тестовое описание', 
-        ) 
-        self.post = Post.objects.create( 
-            author=self.user, 
-            text='Тестовый текст', 
-            group=self.group, 
-        ) 
+        self.group = Group.objects.create(
+            title='Тестовая группа',
+            slug='test-slug',
+            description='Тестовое описание',
+        )
+        self.post = Post.objects.create(
+            author=self.user,
+            text='Тестовый текст',
+            group=self.group,
+        )
         posts_count = Post.objects.count()
         form_data = {'text': 'Изменяем текст', 'group': self.group.id}
         response = self.authorized_client.post(
@@ -65,22 +65,22 @@ class PostFormTests(TestCase):
             kwargs={'post_id': self.post.id}))
         self.assertEqual(Post.objects.count(), posts_count)
         self.assertTrue(Post.objects.filter(
-            text=form_data['text'], 
+            text=form_data['text'],
             group=form_data['group']
         ).exists())
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_post_edit_not_create_guest_client(self):
         """Валидная форма не изменит запись в Post если неавторизован."""
-        self.group = Group.objects.create( 
-            title='Тестовая группа', 
-            slug='test-slug', 
-            description='Тестовое описание', 
-        ) 
-        self.post = Post.objects.create( 
-            author=self.user, 
-            text='Тестовый текст', 
-            group=self.group, 
+        self.group = Group.objects.create(
+            title='Тестовая группа',
+            slug='test-slug',
+            description='Тестовое описание',
+        )
+        self.post = Post.objects.create(
+            author=self.user,
+            text='Тестовый текст',
+            group=self.group,
         )
         posts_count = Post.objects.count()
         form_data = {'text': 'Изменяем текст', 'group': self.group.id}
@@ -96,7 +96,7 @@ class PostFormTests(TestCase):
         )
         self.assertEqual(Post.objects.count(), posts_count)
         self.assertFalse(Post.objects.filter(
-            text=form_data['text'], 
+            text=form_data['text'],
             group=form_data['group']
         ).exists())
         self.assertEqual(response.status_code, HTTPStatus.OK)

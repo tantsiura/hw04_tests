@@ -1,7 +1,7 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
-from django.conf import settings
 
 from ..models import Group, Post
 
@@ -86,7 +86,7 @@ class PostsContextTests(TestCase):
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
-    
+
     def check_attributes(self, test_data):
         self.assertEqual(self.post.text, test_data.text)
 
@@ -117,7 +117,6 @@ class PostsContextTests(TestCase):
                 'username': f'{PostsContextTests.user.username}'})))
         first_object = response.context['page_obj'][0]
         self.check_attributes(first_object)
-
 
     def test_post_with_group_on_the_correct_pages(self):
         '''Пост, созданный с указанием группы,
@@ -157,10 +156,13 @@ class PaginatorViewsTest(TestCase):
 
     def test_first_page_contains_ten_records(self):
         response = self.client.get(reverse('posts:index'))
-        self.assertEqual(len(response.context['page_obj']), settings.ITEMS_PER_PAGE)
+        self.assertEqual(
+            len(response.context['page_obj']),
+            settings.ITEMS_PER_PAGE
+        )
 
     def test_second_page_contains_three_records(self):
         response = self.client.get(reverse('posts:index') + '?page=2')
         self.assertEqual(len(
-            response.context['page_obj']), 
-            settings.ITEMS_FOR_TEST-settings.ITEMS_PER_PAGE)
+            response.context['page_obj']),
+            settings.ITEMS_FOR_TEST - settings.ITEMS_PER_PAGE)
