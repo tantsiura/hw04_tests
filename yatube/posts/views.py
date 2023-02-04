@@ -54,11 +54,11 @@ def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = Comment.objects.select_related('author').all()
     form = CommentForm(request.POST or None)
-    template ='posts/post_detail.html'
+    template = 'posts/post_detail.html'
     context = {
         'post': post,
-        'comments' : comments,
-        'form' : form
+        'comments': comments,
+        'form': form
     }
     return render(request, template, context)
 
@@ -84,7 +84,7 @@ def post_edit(request, post_id):
     """Редактирование поста"""
     post = get_object_or_404(Post, pk=post_id)
     form = PostForm(
-        request.POST or None, 
+        request.POST or None,
         files=request.FILES or None,
         instance=post
     )
@@ -101,6 +101,7 @@ def post_edit(request, post_id):
     form.save()
     return redirect('posts:post_detail', post_id)
 
+
 @login_required
 def add_comment(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
@@ -110,4 +111,4 @@ def add_comment(request, post_id):
         comment.author = request.user
         comment.post = post
         comment.save()
-    return redirect('posts:post_detail', post_id=post_id) 
+    return redirect('posts:post_detail', post_id=post_id)

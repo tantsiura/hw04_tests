@@ -55,8 +55,8 @@ class CommentModelTest(TestCase):
     def test_models_have_correct_object_names(self):
         """Проверяем, что у моделей корректно работает __str__."""
         self.comment = Comment.objects.create(
-            post = self.post,
-            author = self.post.author,
+            post=self.post,
+            author=self.post.author,
             text='Тестовый комментарий',
         )
         test_comment = self.comment
