@@ -24,6 +24,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -31,7 +37,7 @@ SECRET_KEY = 's&2)vt!4cvsaq5%cla*qc%p2y%w5vmqxx*u-top@jj^na0zly-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -52,7 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core.context_processors.year'
+    'core.context_processors.year',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [

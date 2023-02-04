@@ -30,7 +30,7 @@
                 </div>
               {% endfor %}
             {% endif %}
-          <form method="post" action="{% url 'posts:post_create' %}">
+          <form method="post" action="{% url 'posts:post_create' %}" enctype="multipart/form-data">
           {% csrf_token %}
           {% include 'includes/create_post_form.html' %}
           <div class="d-flex justify-content-center">

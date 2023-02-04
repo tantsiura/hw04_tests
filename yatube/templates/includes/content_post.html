@@ -14,5 +14,6 @@
     {% if post.author == user %}
       <a class="btn btn-primary" href="{% url 'posts:post_edit' post.pk %}">редактировать запись</a>
     {% endif %} 
-  </ul>      
+  </ul>   
   <p>{{ post.text|linebreaksbr }}</p>
+  {% include 'includes/create_comment_form.html' %}

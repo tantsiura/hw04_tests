@@ -1,30 +1,67 @@
-<!-- templates/about/tech.html -->
-{% extends "base.html" %}
-{% block title %}Технологии{% endblock %}
-{% block content %}
-<div class="row">
-  <p><h1>Вот что я умею</h1></p>
-  <aside class="col-12 col-md-3">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">
-        Python
-      </li>
-      <li class="list-group-item">
-        Django
-      </li>
-      <li class="list-group-item">
-        HTML
-      </li>
-      <li class="list-group-item">
-        CSS
-      </li>
-      <li class="list-group-item">
-        JavaScript
-      </li>
-    </ul>
-  </aside>
-  <article class="col-12 col-md-9">
-    <p>Позже здесь будет размещена дополнительная информация.</p>
-  </article>
-</div>
-{% endblock %}
+{% load thumbnail %}
+{% load static %}
+<!DOCTYPE html> <!-- Используется html 5 версии -->
+<html lang="ru"> <!-- Язык сайта - русский -->
+  <head>    
+    <meta charset="utf-8"> <!-- Кодировка сайта -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'img/fav/fav.ico' type="image" %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/fav/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
+    <meta name="msapplication-TileColor" content="#000">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <title>
+      {% block title %}
+      Технологии
+      {% endblock %}
+    </title>
+  </head>
+  <body>
+    <header>
+      {% include 'includes/header.html' %}
+    </header>
+    <main> 
+      {% block content %}
+      <center><h1 class="animate__animated animate__rotateIn">Я умею работать с...</h1></center>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="about__info animate__animated animate__fadeInLeft animate__slow">
+              <div class="centered">
+                <p>
+                  <ul>
+                    <li>Python</li>
+                    <li>Django</li>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>JavaScript</li>
+                    <li>Java</li>
+                    <li>R</li>
+                  </ul>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+    </main>
+    <footer class="border-top text-center py-3">
+      {% include 'includes/footer.html' %}   
+    </footer>
+  </body>
+</html>
+
+
+

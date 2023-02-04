@@ -1,19 +1,72 @@
-{% extends "base.html" %}
-{% block title %}Об авторе проекта{% endblock %}
-{% block content %}
-<h1>Hello, It's me</h1>
+{% load thumbnail %}
 {% load static %}
-      
-      <link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-        crossorigin="anonymous"
-      />
-<p>
-  Заполню информацию по завершению проекта ... 
-  <p>
-    <img src="{% static 'img/about_author.jpg' %}" width="250" height="250" class="d-inline-block align-top" alt="">
-  </p>
-  </p>
-{% endblock %}
+<!DOCTYPE html> <!-- Используется html 5 версии -->
+<html lang="ru"> <!-- Язык сайта - русский -->
+  <head>    
+    <meta charset="utf-8"> <!-- Кодировка сайта -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'img/fav/fav.ico' type="image" %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/fav/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
+    <meta name="msapplication-TileColor" content="#000">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <title>
+      {% block title %}
+      Об авторе проекта
+      {% endblock %}
+    </title>
+  </head>
+  <body>
+    <header>
+      {% include 'includes/header.html' %}
+    </header>
+    <main> 
+      {% block content %}
+      <center><h1 class="animate__animated animate__rotateIn">Hello, It's me</h1></center>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="about__info animate__animated animate__fadeInLeft animate__slow">
+              <div class="centered">
+                <h1>Junior Developer</h1>
+                <p>
+                  Всем привет!
+                  Меня зовут Катя, мне 23 года.
+                  Сейчас я работаю в Сбере на глобальных рынках.
+                  На данный момент я программирую только для себя, 
+                  но в будущем планирую совместить свои навыки для развития
+                  проектов в сфере финтеха.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="about__images animate__animated animate__fadeInRight animate__slow">
+              <div class="split right">
+                <img src="{% static 'img/about_author.jpg' %}" width="250" height="250" class="d-inline-block align-top" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+    </main>
+    <footer class="border-top text-center py-3">
+      {% include 'includes/footer.html' %}   
+    </footer>
+  </body>
+</html>
+
+
+
